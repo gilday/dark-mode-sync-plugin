@@ -1,0 +1,24 @@
+<idea-plugin>
+  <id>com.github.gilday.darkmode</id>
+  <name>macOS Dark Mode Sync</name>
+  <version>${project.version}</version>
+  <description>
+    Synchronizes IDEA theme to macOS's Dark Mode. When macOS is in dark mode, plugin sets IDEA to
+    Darcula, but when macOS is in light mode, sets IDEA theme to IntelliJ
+  </description>
+  <vendor email="me@johnathangilday.com" url="https://github.com/gilday/dark-mode-sync-plugin">
+    Johnathan Gilday
+  </vendor>
+
+  <change-notes>
+    Initial Release
+  </change-notes>
+
+  <depends>com.intellij.modules.platform</depends>
+
+  <application-components>
+    <component>
+      <implementation-class>com.github.gilday.darkmode.DarkModeSync</implementation-class>
+    </component>
+  </application-components>
+</idea-plugin>
