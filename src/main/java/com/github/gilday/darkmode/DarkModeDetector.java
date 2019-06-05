@@ -14,10 +14,18 @@ final class DarkModeDetector {
   private final Properties properties;
   private final Pattern versionPattern = Pattern.compile("(\\d+).(\\d+).\\d+");
 
+  /**
+   * @param properties expected to be {@link System#getProperties()}, but this exists as a seam for
+   *     testing.
+   */
   DarkModeDetector(Properties properties) {
     this.properties = properties;
   }
 
+  /**
+   * @return true when System property "os.name" is "Mac OS X"
+   * @throws NullPointerException when required system property "os.name" is missing
+   */
   boolean isMacOS() {
     final String os =
         Objects.requireNonNull(
@@ -25,6 +33,10 @@ final class DarkModeDetector {
     return os.equals("Mac OS X");
   }
 
+  /**
+   * @return true when System property "os.version" reports version "10.14" or higher
+   * @throws NullPointerException when required system property "os.version" is missing
+   */
   boolean isMojaveOrGreater() {
     final String version =
         Objects.requireNonNull(
