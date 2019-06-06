@@ -1,5 +1,6 @@
 language: java
 deploy:
-  - provider: script
-    script:
-      - .gradlew publishPlugin
+  skip_cleanup: true
+  provider: script
+  script:
+    - ./gradlew publishPlugin

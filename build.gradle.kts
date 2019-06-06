@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "0.4.8"
+    id("org.jetbrains.intellij") version "0.4.9"
 }
 
 group = "com.github.gilday"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -25,4 +25,9 @@ tasks.test {
 
 intellij {
     version = "2019.1"
+}
+
+tasks.publishPlugin {
+    val jetBrainsToken: String? by project
+    token(jetBrainsToken)
 }
