@@ -1,11 +1,14 @@
 package com.github.gilday.darkmode;
 
+import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
+
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.ui.LafManager;
 import com.intellij.ide.ui.laf.IntelliJLookAndFeelInfo;
 import com.intellij.ide.ui.laf.darcula.DarculaLookAndFeelInfo;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.SystemInfo;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -27,8 +30,7 @@ public final class DarkModeSync implements Disposable {
 
   /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
   public DarkModeSync(final LafManager lafManager) {
-    final DarkModeDetector detector = new DarkModeDetector(System.getProperties());
-    if (!(detector.isMacOS() && detector.isMojaveOrGreater())) {
+    if (!SystemInfo.isMacOSMojave) {
       logger.error("Plugin only supports macOS Mojave or greater");
       scheduledFuture = null;
       return;
@@ -38,7 +40,7 @@ public final class DarkModeSync implements Disposable {
         executor.scheduleWithFixedDelay(
             () -> {
               final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
-              final boolean isDarkMode = detector.isDarkMode();
+              final boolean isDarkMode = isDarkMode();
               if (isDarkMode && !darculaLaf.equals(current)) {
                 lafManager.setCurrentLookAndFeel(darculaLaf);
               } else if (!isDarkMode && darculaLaf.equals(current)) {
