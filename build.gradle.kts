@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.github.gilday"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -25,6 +25,10 @@ tasks.test {
 
 intellij {
     version = "2019.2"
+}
+
+tasks.patchPluginXml {
+    setSinceBuild("191")
 }
 
 tasks.publishPlugin {
