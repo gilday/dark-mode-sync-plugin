@@ -11,10 +11,12 @@
   </vendor>
 
   <change-notes>
-    Initial Release
+    Support for IDEA 2019.2
   </change-notes>
 
   <depends>com.intellij.modules.platform</depends>
+
+  <idea-version since-build="191" />
 
   <application-components>
     <component>

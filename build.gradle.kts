@@ -1,10 +1,10 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "0.4.9"
+    id("org.jetbrains.intellij") version "0.4.10"
 }
 
 group = "com.github.gilday"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -24,7 +24,7 @@ tasks.test {
 }
 
 intellij {
-    version = "2019.1"
+    version = "2019.2"
 }
 
 tasks.publishPlugin {
