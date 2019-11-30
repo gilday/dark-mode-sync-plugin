@@ -10,7 +10,7 @@
   </vendor>
 
   <change-notes>
-    Support for IDEA 2019.1
+    Support for IDEA 2019.3
   </change-notes>
 
   <depends>com.intellij.modules.platform</depends>
