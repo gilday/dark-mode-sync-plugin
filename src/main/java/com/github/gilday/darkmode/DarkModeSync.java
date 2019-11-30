@@ -3,13 +3,13 @@ package com.github.gilday.darkmode;
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
 import com.intellij.ide.ui.LafManager;
+import com.intellij.ide.ui.laf.IntelliJLookAndFeelInfo;
 import com.intellij.ide.ui.laf.darcula.DarculaLookAndFeelInfo;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 
 import javax.swing.UIManager.LookAndFeelInfo;
-import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,7 @@ public final class DarkModeSync implements Disposable {
   private final ScheduledFuture<?> scheduledFuture;
 
   private final LookAndFeelInfo darkLaf = new DarculaLookAndFeelInfo();
-  private final LookAndFeelInfo lightLaf;
+  private final LookAndFeelInfo lightLaf = new IntelliJLookAndFeelInfo();
 
   private final LafManager lafManager;
 
@@ -38,15 +38,8 @@ public final class DarkModeSync implements Disposable {
     if (!SystemInfo.isMacOSMojave) {
       logger.error("Plugin only supports macOS Mojave or greater");
       scheduledFuture = null;
-      lightLaf = null;
       return;
     }
-    lightLaf =
-        Arrays.stream(lafManager.getInstalledLookAndFeels())
-            .filter(laf -> "Light".equals(laf.getName()))
-            .findFirst()
-            .orElseThrow(
-                () -> new IllegalStateException("Failed to find expected \"Light\" theme"));
     ScheduledExecutorService executor = JobScheduler.getScheduler();
     scheduledFuture =
         executor.scheduleWithFixedDelay(this::updateLafIfNecessary, 0, 3, TimeUnit.SECONDS);
