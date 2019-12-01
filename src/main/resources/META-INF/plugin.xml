@@ -20,4 +20,13 @@
       <implementation-class>com.github.gilday.darkmode.DarkModeSync</implementation-class>
     </component>
   </application-components>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <applicationConfigurable
+      groupId="tools"
+      instance="com.github.gilday.darkmode.DarkModeSettingsUI"
+      displayName="Dark Mode Sync"
+      id="preferences.dark-mode-sync"
+    />
+  </extensions>
 </idea-plugin>
