@@ -1,5 +1,7 @@
 package com.github.gilday.darkmode;
 
+import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
+
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
 import com.intellij.ide.ui.LafManager;
@@ -8,13 +10,10 @@ import com.intellij.ide.ui.laf.darcula.DarculaLookAndFeelInfo;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
-
-import javax.swing.UIManager.LookAndFeelInfo;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * Application component which sets IDEA's theme to Darcula when it detects that macOS is in Dark

@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "0.4.14"
+    id("com.github.sherter.google-java-format") version "0.8"
 }
 
 group = "com.github.gilday"
