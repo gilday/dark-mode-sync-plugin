@@ -25,7 +25,7 @@ tasks.test {
 }
 
 intellij {
-    version = "2019.2"
+    version = "2019.3"
 }
 
 tasks.patchPluginXml {
