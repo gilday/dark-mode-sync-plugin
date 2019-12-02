@@ -29,7 +29,7 @@ intellij {
 }
 
 tasks.patchPluginXml {
-    setSinceBuild("191")
+    setSinceBuild("192")
 }
 
 tasks.publishPlugin {
