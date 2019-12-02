@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "0.4.14"
+    id("org.jetbrains.intellij") version "0.4.11" // do not upgrade until https://github.com/JetBrains/plugin-repository-rest-client/issues/32 resolved
     id("com.github.sherter.google-java-format") version "0.8"
 }
 
