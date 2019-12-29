@@ -10,7 +10,7 @@
   </vendor>
 
   <change-notes>
-    Support for IDEA 2019.3
+    Use Settings to choose Dark and Light themes.
   </change-notes>
 
   <depends>com.intellij.modules.platform</depends>
@@ -20,4 +20,9 @@
       <implementation-class>com.github.gilday.darkmode.DarkModeSync</implementation-class>
     </component>
   </application-components>
+  <extensions defaultExtensionNs="com.intellij">
+    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes" />
+    <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"
+      os="mac"/>
+  </extensions>
 </idea-plugin>

@@ -1,18 +1,23 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "0.4.11" // do not upgrade until https://github.com/JetBrains/plugin-repository-rest-client/issues/32 resolved
+    kotlin("jvm") version "1.3.61"
+    id("org.jetbrains.intellij") version "0.4.15"
     id("com.github.sherter.google-java-format") version "0.8"
 }
 
 group = "com.github.gilday"
-version = "1.0.5"
+version = "1.1.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
+    testImplementation(platform("org.junit:junit-bom:5.5.2"))
+    testApi("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 
 java {
@@ -20,12 +25,16 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 intellij {
     version = "2019.3"
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.patchPluginXml {
