@@ -21,7 +21,8 @@
     </component>
   </application-components>
   <extensions defaultExtensionNs="com.intellij">
-    <applicationConfigurable instance="com.github.gilday.darkmode.config.DarkModeConfigurable"
+    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes" />
+    <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"
       os="mac"/>
   </extensions>
 </idea-plugin>
