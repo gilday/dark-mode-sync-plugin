@@ -55,7 +55,7 @@ public final class DarkModeSync implements Disposable {
     final LookAndFeelInfo light = themes.getLight();
     if (isDarkMode && !dark.equals(current)) {
       updateLaf(dark);
-    } else if (!isDarkMode && dark.equals(current)) {
+    } else if (!isDarkMode && !light.equals(current)) {
       updateLaf(light);
     }
   }

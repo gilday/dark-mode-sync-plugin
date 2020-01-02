@@ -9,12 +9,10 @@ import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.layout.panel
 import javax.swing.UIManager.LookAndFeelInfo
 
-
 class DarkModeConfigurable(private val lafManager: LafManager) : BoundConfigurable("Dark Mode Sync") {
 
-    private val options = ServiceManager.getService(DarkModeSyncThemes::class.java)
-
     override fun createPanel(): DialogPanel {
+        val options = ServiceManager.getService(DarkModeSyncThemes::class.java)
         val lafs = lafManager.installedLookAndFeels.asList()
         val renderer = SimpleListCellRenderer.create("") { obj: LookAndFeelInfo -> obj.name }
         return panel {
