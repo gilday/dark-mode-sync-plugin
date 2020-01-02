@@ -11,26 +11,34 @@ import javax.swing.UIManager
 
 @State(name = "DarkModeSync", storages = [Storage("dark-mode-sync.xml", roamingType = RoamingType.PER_OS)])
 class DarkModeSyncThemes : PersistentStateComponent<DarkModeSyncThemes.State> {
-    @Volatile
-    var dark: UIManager.LookAndFeelInfo = DarculaLookAndFeelInfo()
 
     @Volatile
-    var light: UIManager.LookAndFeelInfo = IntelliJLookAndFeelInfo()
+    var dark: UIManager.LookAndFeelInfo = DEFAULT_DARK_THEME
+
+    @Volatile
+    var light: UIManager.LookAndFeelInfo = DEFAULT_LIGHT_THEME
 
     override fun getState(): State? {
-        return State(dark.className, light.className)
+        return State(dark.name, dark.className, light.name, light.className)
     }
 
     override fun loadState(state: State) {
         val lafManager = LafManager.getInstance()
-        dark = lafManager.installedLookAndFeels.find { it.className == state.darkClass }
-                ?: DarculaLookAndFeelInfo()
-        light = lafManager.installedLookAndFeels.first { it.className == state.lightClass }
-                ?: IntelliJLookAndFeelInfo()
+        dark = lafManager.installedLookAndFeels.find { it.name == state.darkName && it.className == state.darkClassName }
+                ?: DEFAULT_DARK_THEME
+        light = lafManager.installedLookAndFeels.first { it.name == state.lightName && it.className == state.lightClassName }
+                ?: DEFAULT_LIGHT_THEME
     }
 
-    class State(
-            var darkClass: String?,
-            var lightClass: String?
+    data class State(
+            var darkName: String? = DEFAULT_DARK_THEME.name,
+            var darkClassName: String? = DEFAULT_DARK_THEME.className,
+            var lightName: String? = DEFAULT_LIGHT_THEME.name,
+            var lightClassName: String? = DEFAULT_LIGHT_THEME.className
     )
+
+    companion object {
+        val DEFAULT_DARK_THEME: UIManager.LookAndFeelInfo = DarculaLookAndFeelInfo()
+        val DEFAULT_LIGHT_THEME: UIManager.LookAndFeelInfo = IntelliJLookAndFeelInfo()
+    }
 }
