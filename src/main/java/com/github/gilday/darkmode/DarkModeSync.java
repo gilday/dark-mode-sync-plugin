@@ -5,9 +5,8 @@ import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
 import com.intellij.ide.ui.LafManager;
-import com.intellij.ide.ui.laf.IntelliJLookAndFeelInfo;
-import com.intellij.ide.ui.laf.darcula.DarculaLookAndFeelInfo;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,13 +25,12 @@ public final class DarkModeSync implements Disposable {
 
   private final ScheduledFuture<?> scheduledFuture;
 
-  private final LookAndFeelInfo darkLaf = new DarculaLookAndFeelInfo();
-  private final LookAndFeelInfo lightLaf = new IntelliJLookAndFeelInfo();
-
   private final LafManager lafManager;
+  private final DarkModeSyncThemes themes;
 
   /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
   public DarkModeSync(final LafManager lafManager) {
+    themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
     if (!SystemInfo.isMacOSMojave) {
       logger.error("Plugin only supports macOS Mojave or greater");
@@ -53,10 +51,12 @@ public final class DarkModeSync implements Disposable {
   private void updateLafIfNecessary() {
     final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
     final boolean isDarkMode = isDarkMode();
-    if (isDarkMode && !darkLaf.equals(current)) {
-      updateLaf(darkLaf);
-    } else if (!isDarkMode && darkLaf.equals(current)) {
-      updateLaf(lightLaf);
+    final LookAndFeelInfo dark = themes.getDark();
+    final LookAndFeelInfo light = themes.getLight();
+    if (isDarkMode && !dark.equals(current)) {
+      updateLaf(dark);
+    } else if (!isDarkMode && !light.equals(current)) {
+      updateLaf(light);
     }
   }
 
