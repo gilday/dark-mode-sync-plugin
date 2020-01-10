@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.layout.panel
+import com.intellij.util.ui.components.BorderLayoutPanel
 import javax.swing.UIManager.LookAndFeelInfo
 
 class DarkModeConfigurable(private val lafManager: LafManager) : BoundConfigurable("Dark Mode Sync") {

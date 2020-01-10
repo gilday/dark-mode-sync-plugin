@@ -1,6 +1,7 @@
 package com.github.gilday.darkmode;
 
-import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
+import static com.github.gilday.darkmode.DarkModeDetector.isMacDarkMode;
+import static com.github.gilday.darkmode.DarkModeDetector.isWindowsDarkMode;
 
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
@@ -32,7 +33,7 @@ public final class DarkModeSync implements Disposable {
   public DarkModeSync(final LafManager lafManager) {
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
-    if (!SystemInfo.isMacOSMojave) {
+    if (!SystemInfo.isMacOSMojave | !SystemInfo.isWin10OrNewer) {
       logger.error("Plugin only supports macOS Mojave or greater");
       scheduledFuture = null;
       return;
@@ -50,7 +51,12 @@ public final class DarkModeSync implements Disposable {
 
   private void updateLafIfNecessary() {
     final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
-    final boolean isDarkMode = isDarkMode();
+    final boolean isDarkMode;
+    if (SystemInfo.isMacOSMojave) {
+      isDarkMode = isMacDarkMode();
+    } else {
+      isDarkMode = isWindowsDarkMode();
+    }
     final LookAndFeelInfo dark = themes.getDark();
     final LookAndFeelInfo light = themes.getLight();
     if (isDarkMode && !dark.equals(current)) {
