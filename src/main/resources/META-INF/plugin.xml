@@ -1,6 +1,6 @@
 <idea-plugin>
   <id>com.github.gilday.darkmode</id>
-  <name>macOS Dark Mode Sync</name>
+  <name>Dark Mode Sync</name>
   <description>
     Synchronizes IDEA theme to macOS's and Windows' Dark Mode. When macOS or Windows is in dark mode, plugin sets IDEA to
     Darcula, but when macOS is in light mode, sets IDEA theme to IntelliJ as standard options.
@@ -12,8 +12,10 @@
   </vendor>
 
   <change-notes>
-    Use Settings to choose Dark and Light themes.
     Added Support for Windows.
+
+    Changes in 1.1.0:
+    Use Settings to choose Dark and Light themes.
   </change-notes>
 
   <depends>com.intellij.modules.platform</depends>

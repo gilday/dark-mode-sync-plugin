@@ -44,13 +44,15 @@ final class DarkModeDetector {
       try {
         process = Runtime.getRuntime().exec("reg query " +
             "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"+
-            "\" /v " + "AppsUseLightTheme");
+            " /v " + "AppsUseLightTheme");
       }
       catch (IOException e) {
         throw new IllegalStateException("Failed to execute Windows registry query!", e);
       }
 
       try (BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+        stdoutReader.readLine();
+        stdoutReader.readLine();
         final String stdout = stdoutReader.readLine();
         if ("0".equals(stdout)) {
           return true;

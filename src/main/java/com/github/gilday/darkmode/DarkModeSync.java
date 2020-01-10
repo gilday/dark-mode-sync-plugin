@@ -33,7 +33,7 @@ public final class DarkModeSync implements Disposable {
   public DarkModeSync(final LafManager lafManager) {
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
-    if (!SystemInfo.isMacOSMojave | !SystemInfo.isWin10OrNewer) {
+    if (SystemInfo.isLinux) {
       logger.error("Plugin only supports macOS Mojave or greater");
       scheduledFuture = null;
       return;
@@ -54,7 +54,7 @@ public final class DarkModeSync implements Disposable {
     final boolean isDarkMode;
     if (SystemInfo.isMacOSMojave) {
       isDarkMode = isMacDarkMode();
-    } else {
+    } else if (SystemInfo.isWin8OrNewer){
       isDarkMode = isWindowsDarkMode();
     }
     final LookAndFeelInfo dark = themes.getDark();
