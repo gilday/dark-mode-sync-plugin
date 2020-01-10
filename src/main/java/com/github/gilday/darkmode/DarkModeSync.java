@@ -24,8 +24,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 public final class DarkModeSync implements Disposable {
 
+  private static final Logger logger = Logger.getInstance(DarkModeSync.class);
   private final ScheduledFuture<?> scheduledFuture;
-
   private final LafManager lafManager;
   private final DarkModeSyncThemes themes;
 
@@ -34,7 +34,7 @@ public final class DarkModeSync implements Disposable {
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
     if (SystemInfo.isLinux) {
-      logger.error("Plugin only supports macOS Mojave or greater");
+      logger.error("Plugin only supports macOS Mojave or greater and Windows 8 or greater");
       scheduledFuture = null;
       return;
     }
@@ -54,9 +54,10 @@ public final class DarkModeSync implements Disposable {
     final boolean isDarkMode;
     if (SystemInfo.isMacOSMojave) {
       isDarkMode = isMacDarkMode();
-    } else if (SystemInfo.isWin8OrNewer){
+    } else {
       isDarkMode = isWindowsDarkMode();
     }
+
     final LookAndFeelInfo dark = themes.getDark();
     final LookAndFeelInfo light = themes.getLight();
     if (isDarkMode && !dark.equals(current)) {
@@ -69,6 +70,4 @@ public final class DarkModeSync implements Disposable {
   private void updateLaf(final LookAndFeelInfo newLaf) {
     QuickChangeLookAndFeel.switchLafAndUpdateUI(lafManager, newLaf, true);
   }
-
-  private static final Logger logger = Logger.getInstance(DarkModeSync.class);
 }

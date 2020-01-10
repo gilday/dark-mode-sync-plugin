@@ -15,6 +15,7 @@ final class DarkModeDetectorTest {
   void reads_dark_mode_setting() {
     assumeTrue(SystemInfo.isMacOSMojave);
 
+
     // test passes if isDarkMode completes without error
   }
 }
