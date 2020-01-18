@@ -14,12 +14,23 @@ IDEA theme to IntelliJ
 
     ./gradlew runIde
 
-## How Does It Work?
+## How Does It Work on MacOS?
 
 The plugin polls the macOS Dark Mode configuration by executing the following
 command and interpreting its output.
 
     defaults read -g AppleInterfaceStyle
+
+When the plugin detects that macOS is using Dark Mode, it sets the IDEA theme to
+"Darcula". When the plugin detects that macOS is not using Dark Mode, it sets
+the IDEA theme to "IntelliJ".
+
+## How Does It Work on Windows?
+
+The plugin polls the Windows Dark Mode configuration by executing the following
+command and interpreting its output.
+
+    HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme
 
 When the plugin detects that macOS is using Dark Mode, it sets the IDEA theme to
 "Darcula". When the plugin detects that macOS is not using Dark Mode, it sets
