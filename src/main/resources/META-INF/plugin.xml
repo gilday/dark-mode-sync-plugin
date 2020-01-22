@@ -2,7 +2,8 @@
   <id>com.github.gilday.darkmode</id>
   <name>Dark Mode Sync</name>
   <description>
-    Synchronizes IDEA theme to macOS's or Windows Dark Mode. When macOS or Windows is in dark mode, plugin sets IDEA to
+    Synchronizes IDEA theme to macOS's or Windows Dark Mode. When macOS or Windows is in dark mode,
+    plugin sets IDEA to
     Darcula, but when macOS or Windows is in light mode, sets IDEA theme to IntelliJ
   </description>
   <vendor email="me@johnathangilday.com" url="https://johnathangilday.com">
@@ -21,8 +22,7 @@
     </component>
   </application-components>
   <extensions defaultExtensionNs="com.intellij">
-    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes" />
-    <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"
-      os="mac"/>
+    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes"/>
+    <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"/>
   </extensions>
 </idea-plugin>

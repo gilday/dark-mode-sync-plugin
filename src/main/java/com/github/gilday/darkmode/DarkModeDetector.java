@@ -42,28 +42,30 @@ final class DarkModeDetector {
     final Process process;
 
     try {
-      process = Runtime.getRuntime().exec("reg query " +
-
-          "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"+
-          " /v " + "AppsUseLightTheme");
-    }
-    catch (IOException e) {
+      process =
+          Runtime.getRuntime()
+              .exec(
+                  "reg query "
+                      + "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize"
+                      + " /v "
+                      + "AppsUseLightTheme");
+    } catch (IOException e) {
       throw new IllegalStateException("Failed to execute Windows registry query!", e);
     }
 
-    try (BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+    try (BufferedReader stdoutReader =
+        new BufferedReader(new InputStreamReader(process.getInputStream()))) {
       stdoutReader.readLine();
       stdoutReader.readLine();
       final String stdout = stdoutReader.readLine();
-      if ("0".equals(stdout)) {
+      if (stdout.endsWith("0")) {
         return true;
-      }
-      else if ("1".equals(stdout)){
+      } else if (stdout.endsWith("1")) {
         return false;
       }
-      throw new IllegalStateException("Unexpected Registry Value for AppsUseLightThemes: " + stdout);
-    }
-    catch (IOException e) {
+      throw new IllegalStateException(
+          "Unexpected Registry Value for AppsUseLightThemes: " + stdout);
+    } catch (IOException e) {
       throw new IllegalStateException("Failed to read response from Registry query!", e);
     }
   }

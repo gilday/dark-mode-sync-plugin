@@ -29,15 +29,13 @@ public final class DarkModeSync implements Disposable {
   private final LafManager lafManager;
   private final DarkModeSyncThemes themes;
 
-  private boolean isDarkMode;
-
   /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
   public DarkModeSync(final LafManager lafManager) {
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
-    //Checks if OS is Windows or MacOS
-    if (SystemInfo.isLinux) {
-      logger.error("Plugin only supports macOS Mojave or greater");
+    // Checks if OS is Windows or MacOS
+    if (!(SystemInfo.isMacOSMojave || SystemInfo.isWin10OrNewer)) {
+      logger.error("Plugin only supports macOS Mojave and greater or Windows 10 and greater");
       scheduledFuture = null;
       return;
     }
@@ -54,11 +52,15 @@ public final class DarkModeSync implements Disposable {
 
   private void updateLafIfNecessary() {
     final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
-    if(SystemInfo.isMacOSMojave) {
+    boolean isDarkMode;
+
+    if (SystemInfo.isMacOSMojave) {
       isDarkMode = isMacOsDarkMode();
-    }
-    else {
-      isDarkMode= isWindowsDarkMode();
+    } else if (SystemInfo.isWin10OrNewer) {
+      isDarkMode = isWindowsDarkMode();
+    } else {
+      throw new IllegalStateException(
+          "Plugin only works on MacOS Mojave and newer or Windows 10 and newer.");
     }
     final LookAndFeelInfo dark = themes.getDark();
     final LookAndFeelInfo light = themes.getLight();

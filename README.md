@@ -22,16 +22,16 @@ command and interpreting its output.
     defaults read -g AppleInterfaceStyle
 
 When the plugin detects that macOS is using Dark Mode, it sets the IDEA theme to
-"Darcula". When the plugin detects that macOS is not using Dark Mode, it sets
-the IDEA theme to "IntelliJ".
+the selected theme. When the plugin detects that macOS is not using Dark Mode, it sets
+the IDEA theme to the corresponding theme.
 
 ## How Does It Work on Windows?
 
 The plugin polls the Windows Dark Mode configuration by executing the following
 command and interpreting its output.
 
-    HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme
+    reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme
 
-When the plugin detects that macOS is using Dark Mode, it sets the IDEA theme to
-"Darcula". When the plugin detects that macOS is not using Dark Mode, it sets
-the IDEA theme to "IntelliJ".
+When the plugin detects that Windows is using Dark Mode, it sets the IDEA theme to
+the selected theme. When the plugin detects that macOS is not using Dark Mode, it sets
+the IDEA theme to corresponding theme.
