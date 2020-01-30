@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.com/gilday/dark-mode-sync-plugin.svg?branch=master)](https://travis-ci.com/gilday/dark-mode-sync-plugin)
 
-Plugin for synchronizing IDEA's theme with macOS's Dark Mode. When macOS is in
-dark mode, plugin sets IDEA to Darcula, but when macOS is in light mode, sets
-IDEA theme to IntelliJ
+Plugin for synchronizing IDEA's theme with macOS's or Windows' Dark Mode. When macOS or Windows is in
+dark mode, plugin sets IDEA to the chosen theme, but when macOS or Windows is in light mode, sets
+IDEA theme to the theme chosen for light mode.
 
 ## Building
 
@@ -33,5 +33,5 @@ command and interpreting its output.
     reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize\AppsUseLightTheme
 
 When the plugin detects that Windows is using Dark Mode, it sets the IDEA theme to
-the selected theme. When the plugin detects that macOS is not using Dark Mode, it sets
+the selected theme. When the plugin detects that Windows is not using Dark Mode, it sets
 the IDEA theme to corresponding theme.

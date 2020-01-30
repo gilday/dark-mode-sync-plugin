@@ -52,7 +52,7 @@ public final class DarkModeSync implements Disposable {
 
   private void updateLafIfNecessary() {
     final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
-    boolean isDarkMode;
+    final boolean isDarkMode;
 
     if (SystemInfo.isMacOSMojave) {
       isDarkMode = isMacOsDarkMode();
