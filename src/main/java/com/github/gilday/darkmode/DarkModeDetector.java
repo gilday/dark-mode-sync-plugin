@@ -9,7 +9,7 @@ final class DarkModeDetector {
 
   /**
    * @return true if the user has enabled Dark Mode
-   * @throws IllegalStateException when called plugin fails to read system dark mode setting. 
+   * @throws IllegalStateException when plugin fails to read system dark mode setting. 
    */
   static boolean isMacOsDarkMode() {
     final Process process;
