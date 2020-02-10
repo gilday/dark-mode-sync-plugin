@@ -12,10 +12,20 @@ import org.junit.jupiter.api.Test;
 final class DarkModeDetectorTest {
 
   @Test
-  void reads_dark_mode_setting() {
+  void isMacOsDarkModeTest() {
+    // Test only runs on MacOS Mojave or newer
     assumeTrue(SystemInfo.isMacOSMojave);
 
-    // test passes if isDarkMode completes without error
-    DarkModeDetector.isDarkMode();
+    // test passes if isMacOsDarkMode completes without error
+    DarkModeDetector.isMacOsDarkMode();
+  }
+
+  @Test
+  void isWindowsDarkModeTest() {
+    // Test only runs on Windows 10 or newer
+    assumeTrue(SystemInfo.isWin10OrNewer);
+
+    // test passes if isWindowsDarkMode completes without error
+    DarkModeDetector.isWindowsDarkMode();
   }
 }

@@ -1,6 +1,7 @@
 package com.github.gilday.darkmode;
 
-import static com.github.gilday.darkmode.DarkModeDetector.isDarkMode;
+import static com.github.gilday.darkmode.DarkModeDetector.isMacOsDarkMode;
+import static com.github.gilday.darkmode.DarkModeDetector.isWindowsDarkMode;
 
 import com.intellij.concurrency.JobScheduler;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
@@ -32,8 +33,9 @@ public final class DarkModeSync implements Disposable {
   public DarkModeSync(final LafManager lafManager) {
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
     this.lafManager = lafManager;
-    if (!SystemInfo.isMacOSMojave) {
-      logger.error("Plugin only supports macOS Mojave or greater");
+    // Checks if OS is Windows or MacOS
+    if (!(SystemInfo.isMacOSMojave || SystemInfo.isWin10OrNewer)) {
+      logger.error("Plugin only supports macOS Mojave and greater or Windows 10 and greater");
       scheduledFuture = null;
       return;
     }
@@ -50,7 +52,16 @@ public final class DarkModeSync implements Disposable {
 
   private void updateLafIfNecessary() {
     final LookAndFeelInfo current = lafManager.getCurrentLookAndFeel();
-    final boolean isDarkMode = isDarkMode();
+    final boolean isDarkMode;
+
+    if (SystemInfo.isMacOSMojave) {
+      isDarkMode = isMacOsDarkMode();
+    } else if (SystemInfo.isWin10OrNewer) {
+      isDarkMode = isWindowsDarkMode();
+    } else {
+      throw new IllegalStateException(
+          "Plugin only works on MacOS Mojave and newer or Windows 10 and newer.");
+    }
     final LookAndFeelInfo dark = themes.getDark();
     final LookAndFeelInfo light = themes.getLight();
     if (isDarkMode && !dark.equals(current)) {
