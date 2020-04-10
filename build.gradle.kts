@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.gilday"
-version = "1.2.0"
+version = "1.2.1"
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ java {
 }
 
 intellij {
-    version = "2019.3"
+    version = "2020.1"
 }
 
 tasks.withType<KotlinCompile> {
