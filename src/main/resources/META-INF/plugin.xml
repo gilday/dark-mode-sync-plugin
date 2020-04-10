@@ -11,7 +11,7 @@
   </vendor>
 
   <change-notes>
-    Added functionality for Windows.
+    Added functionality for Windows and IDEA 2020.1.
   </change-notes>
 
   <depends>com.intellij.modules.platform</depends>
