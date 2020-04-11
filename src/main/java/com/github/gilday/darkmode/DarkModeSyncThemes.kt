@@ -24,9 +24,10 @@ class DarkModeSyncThemes : PersistentStateComponent<DarkModeSyncThemes.State> {
 
     override fun loadState(state: State) {
         val lafManager = LafManager.getInstance()
-        dark = lafManager.installedLookAndFeels.find { it.name == state.darkName && it.className == state.darkClassName }
+        val lafs = lafManager.installedLookAndFeels
+        dark = lafs.find { it.name == state.darkName && it.className == state.darkClassName }
                 ?: DEFAULT_DARK_THEME
-        light = lafManager.installedLookAndFeels.first { it.name == state.lightName && it.className == state.lightClassName }
+        light = lafs.find { it.name == state.lightName && it.className == state.lightClassName }
                 ?: DEFAULT_LIGHT_THEME
     }
 
