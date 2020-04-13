@@ -1,4 +1,5 @@
 language: java
+dist: xenial # uses jdk 11 by default
 deploy:
   skip_cleanup: true
   provider: script
