@@ -1,6 +1,6 @@
 # macOS Dark Mode Sync IDEA Plugin
 
-[![Build Status](https://travis-ci.com/gilday/dark-mode-sync-plugin.svg?branch=master)](https://travis-ci.com/gilday/dark-mode-sync-plugin)
+![](https://github.com/gilday/dark-mode-sync-plugin/workflows/Build%20and%20Test/badge.svg)
 
 Plugin for synchronizing IDEA's theme with macOS's or Windows' Dark Mode. When macOS or Windows is in
 dark mode, plugin sets IDEA to the chosen theme, but when macOS or Windows is in light mode, sets
