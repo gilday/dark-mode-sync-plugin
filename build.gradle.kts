@@ -3,12 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("java")
     kotlin("jvm") version "1.3.61"
-    id("org.jetbrains.intellij") version "0.4.15"
+    id("org.jetbrains.intellij") version "0.4.21"
     id("com.github.sherter.google-java-format") version "0.8"
 }
 
 group = "com.github.gilday"
-version = "1.2.2"
+version = "1.2.3"
 
 repositories {
     mavenCentral()
@@ -39,6 +39,7 @@ tasks.test {
 
 tasks.patchPluginXml {
     setSinceBuild("201")
+    setUntilBuild("202.*")
 }
 
 tasks.publishPlugin {

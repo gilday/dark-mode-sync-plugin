@@ -8,9 +8,16 @@
     Johnathan Gilday
   </vendor>
 
-  <change-notes>
-    Added functionality for Windows and IDEA 2020.1.
-  </change-notes>
+  <change-notes><![CDATA[
+    v1.2.3
+    <ul>
+      <li>Added support IDEA 2020.2.</li>
+    </ul>
+    v1.2.2
+    <ul>
+      <li>Added functionality for Windows and IDEA 2020.1.</li>
+    </ul>
+  ]]></change-notes>
 
   <depends>com.intellij.modules.platform</depends>
 
