@@ -27,5 +27,4 @@ jobs:
         plugin: './build/distributions/dark-mode-sync-plugin-*'
         versions: |
           2020.1
-          2020.2
           LATEST-EAP-SNAPSHOT
