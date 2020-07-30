@@ -4,7 +4,7 @@ plugins {
     id("java")
     kotlin("jvm") version "1.3.61"
     id("org.jetbrains.intellij") version "0.4.21"
-    id("com.github.sherter.google-java-format") version "0.8"
+    id("com.github.sherter.google-java-format") version "0.9"
 }
 
 group = "com.github.gilday"
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.5.2"))
+    testImplementation(platform("org.junit:junit-bom:5.6.2"))
     testApi("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
