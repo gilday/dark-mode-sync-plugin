@@ -35,3 +35,7 @@ command and interpreting its output.
 When the plugin detects that Windows is using Dark Mode, it sets the IDEA theme to
 the selected theme. When the plugin detects that Windows is not using Dark Mode, it sets
 the IDEA theme to corresponding theme.
+
+## Attributions
+
+Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
