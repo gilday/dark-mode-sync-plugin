@@ -10,6 +10,8 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.util.Alarm;
+import com.intellij.util.Alarm.ThreadToUse;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +30,7 @@ public final class DarkModeSync implements Disposable {
 
   private final LafManager lafManager;
   private final DarkModeSyncThemes themes;
+  private final Alarm updateOnUIThreadAlarm;
 
   /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
   public DarkModeSync(final LafManager lafManager) {
@@ -37,17 +40,25 @@ public final class DarkModeSync implements Disposable {
     if (!(SystemInfo.isMacOSMojave || SystemInfo.isWin10OrNewer)) {
       logger.error("Plugin only supports macOS Mojave and greater or Windows 10 and greater");
       scheduledFuture = null;
+      updateOnUIThreadAlarm = null;
       return;
     }
-    ScheduledExecutorService executor = JobScheduler.getScheduler();
+    final ScheduledExecutorService executor = JobScheduler.getScheduler();
     scheduledFuture =
         executor.scheduleWithFixedDelay(this::updateLafIfNecessary, 0, 3, TimeUnit.SECONDS);
+    // initialize this last because it publishes "this"
+    updateOnUIThreadAlarm = new Alarm(ThreadToUse.SWING_THREAD, this);
   }
 
   /** cancels the scheduled task if one exists */
   @Override
   public void dispose() {
-    if (scheduledFuture != null) scheduledFuture.cancel(true);
+    if (scheduledFuture != null) {
+      scheduledFuture.cancel(true);
+    }
+    if (updateOnUIThreadAlarm != null) {
+      updateOnUIThreadAlarm.cancelAllRequests();
+    }
   }
 
   private void updateLafIfNecessary() {
@@ -71,8 +82,13 @@ public final class DarkModeSync implements Disposable {
     }
   }
 
+  /**
+   * Uses the {@link #updateOnUIThreadAlarm} to schedule a look and feel update on the Swing UI
+   * thread
+   */
   private void updateLaf(final LookAndFeelInfo newLaf) {
-    QuickChangeLookAndFeel.switchLafAndUpdateUI(lafManager, newLaf, true);
+    updateOnUIThreadAlarm.addRequest(
+        () -> QuickChangeLookAndFeel.switchLafAndUpdateUI(lafManager, newLaf, false), 0);
   }
 
   private static final Logger logger = Logger.getInstance(DarkModeSync.class);
