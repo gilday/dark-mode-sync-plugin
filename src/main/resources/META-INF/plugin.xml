@@ -30,11 +30,10 @@
   <depends>com.intellij.modules.platform</depends>
 
   <application-components>
-    <component>
-      <implementation-class>com.github.gilday.darkmode.DarkModeSync</implementation-class>
-    </component>
   </application-components>
   <extensions defaultExtensionNs="com.intellij">
+    <postStartupActivity implementation="com.github.gilday.darkmode.DarkModeSync$MyStartupActivity"/>
+    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSync"/>
     <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes"/>
     <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"/>
   </extensions>

@@ -9,6 +9,8 @@ import com.intellij.ide.ui.LafManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.util.Alarm;
 import com.intellij.util.Alarm.ThreadToUse;
@@ -16,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.swing.UIManager.LookAndFeelInfo;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Application component which sets IDEA's theme to Darcula when it detects that macOS is in Dark
@@ -26,16 +29,27 @@ import javax.swing.UIManager.LookAndFeelInfo;
  */
 public final class DarkModeSync implements Disposable {
 
-  private final ScheduledFuture<?> scheduledFuture;
+  private ScheduledFuture<?> scheduledFuture;
 
-  private final LafManager lafManager;
-  private final DarkModeSyncThemes themes;
-  private final Alarm updateOnUIThreadAlarm;
+  private LafManager lafManager;
+  private DarkModeSyncThemes themes;
+  private Alarm updateOnUIThreadAlarm;
 
-  /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
-  public DarkModeSync(final LafManager lafManager) {
+  private static final class MyStartupActivity implements StartupActivity.DumbAware {
+    @Override
+    public void runActivity(@NotNull Project project) {
+      getInstance(project).onStartup();
+    }
+  }
+
+  public static DarkModeSync getInstance(@NotNull Project project) {
+    return project.getService(DarkModeSync.class);
+  }
+
+  public void onStartup(){
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
-    this.lafManager = lafManager;
+    // lafManager IDEA look-and-feel manager for getting and setting the current theme
+    this.lafManager = LafManager.getInstance();
     // Checks if OS is Windows or MacOS
     if (!(SystemInfo.isMacOSMojave || SystemInfo.isWin10OrNewer)) {
       logger.error("Plugin only supports macOS Mojave and greater or Windows 10 and greater");
