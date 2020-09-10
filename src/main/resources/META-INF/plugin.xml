@@ -32,9 +32,13 @@
   <application-components>
   </application-components>
   <extensions defaultExtensionNs="com.intellij">
-    <postStartupActivity implementation="com.github.gilday.darkmode.DarkModeSync$MyStartupActivity"/>
     <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSync"/>
     <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes"/>
     <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"/>
   </extensions>
+  <applicationListeners>
+    <listener
+      class="com.github.gilday.darkmode.DarkModeSync$MyLifecycleListener"
+      topic="com.intellij.ide.AppLifecycleListener"/>
+  </applicationListeners>
 </idea-plugin>

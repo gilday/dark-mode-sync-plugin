@@ -4,6 +4,7 @@ import static com.github.gilday.darkmode.DarkModeDetector.isMacOsDarkMode;
 import static com.github.gilday.darkmode.DarkModeDetector.isWindowsDarkMode;
 
 import com.intellij.concurrency.JobScheduler;
+import com.intellij.ide.AppLifecycleListener;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
 import com.intellij.ide.ui.LafManager;
 import com.intellij.openapi.Disposable;
@@ -19,6 +20,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.swing.UIManager.LookAndFeelInfo;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Application component which sets IDEA's theme to Darcula when it detects that macOS is in Dark
@@ -27,23 +29,32 @@ import org.jetbrains.annotations.NotNull;
  * <p>Schedules a background job for polling macOS Dark Mode configuration and updating IDEA
  * configuration accordingly.
  */
-public final class DarkModeSync implements Disposable {
+public final class DarkModeSync {
 
+  private static DarkModeSync myInstance;
   private ScheduledFuture<?> scheduledFuture;
 
   private LafManager lafManager;
   private DarkModeSyncThemes themes;
   private Alarm updateOnUIThreadAlarm;
 
-  private static final class MyStartupActivity implements StartupActivity.DumbAware {
+  public static final class MyLifecycleListener implements AppLifecycleListener {
     @Override
-    public void runActivity(@NotNull Project project) {
-      getInstance(project).onStartup();
+    public void appStarting (@Nullable Project project) {
+      getInstance().onStartup();
+    }
+
+    @Override
+    public void appWillBeClosed(boolean isRestart) {
+      getInstance().onClose();
     }
   }
 
-  public static DarkModeSync getInstance(@NotNull Project project) {
-    return project.getService(DarkModeSync.class);
+  public static DarkModeSync getInstance() {
+    if (myInstance != null) {
+      myInstance = new DarkModeSync();
+    }
+    return myInstance;
   }
 
   public void onStartup(){
@@ -61,18 +72,18 @@ public final class DarkModeSync implements Disposable {
     scheduledFuture =
         executor.scheduleWithFixedDelay(this::updateLafIfNecessary, 0, 3, TimeUnit.SECONDS);
     // initialize this last because it publishes "this"
-    updateOnUIThreadAlarm = new Alarm(ThreadToUse.SWING_THREAD, this);
+    updateOnUIThreadAlarm = new Alarm(ThreadToUse.SWING_THREAD);
   }
 
   /** cancels the scheduled task if one exists */
-  @Override
-  public void dispose() {
+  public void onClose() {
     if (scheduledFuture != null) {
       scheduledFuture.cancel(true);
     }
     if (updateOnUIThreadAlarm != null) {
       updateOnUIThreadAlarm.cancelAllRequests();
     }
+    myInstance = null;
   }
 
   private void updateLafIfNecessary() {
