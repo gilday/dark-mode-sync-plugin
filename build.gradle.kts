@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.github.gilday"
-version = "1.2.5"
+version = "1.2.6"
 
 repositories {
     mavenCentral()
@@ -20,9 +20,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 
+// https://github.com/gilday/dark-mode-sync-plugin/issues/19
+val jvmTarget = JavaVersion.VERSION_1_8
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = jvmTarget
+    targetCompatibility = jvmTarget
 }
 
 intellij {
@@ -30,7 +33,7 @@ intellij {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.majorVersion
+    kotlinOptions.jvmTarget = jvmTarget.toString()
 }
 
 tasks.test {

@@ -9,6 +9,10 @@
   </vendor>
 
   <change-notes><![CDATA[
+    v1.2.6
+    <ul>
+      <li>Fixed remaining incompatibilities with IDEs running on JetBrains Runtime 8 such as Android Studio.</li>
+    </ul>
     v1.2.5
     <ul>
       <li>Fixed a problem wherein the theme would only partially update on occasion.</li>
