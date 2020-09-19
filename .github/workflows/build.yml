@@ -22,10 +22,12 @@ jobs:
 
 
     - name: Verify Plugin
-      uses: thepieterdc/intellij-plugin-verifier-action@v1.1.2
+      uses: ChrisCarini/intellij-platform-plugin-verifier-action@v1.0.3
       with:
-        plugin: './build/distributions/dark-mode-sync-plugin-*'
-        versions: |
-          2020.1
-          2020.2
-          LATEST-EAP-SNAPSHOT
+        ide-versions: |
+          ideaIC:2020.1
+          ideaIU:2020.1
+          ideaIC:2020.2
+          ideaIU:2020.2
+          ideaIC:LATEST-EAP-SNAPSHOT
+          ideaIU:LATEST-EAP-SNAPSHOT
