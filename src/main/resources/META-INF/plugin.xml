@@ -34,12 +34,15 @@
   <depends>com.intellij.modules.platform</depends>
 
   <application-components>
-    <component>
-      <implementation-class>com.github.gilday.darkmode.DarkModeSync</implementation-class>
-    </component>
   </application-components>
   <extensions defaultExtensionNs="com.intellij">
+    <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSync"/>
     <applicationService serviceImplementation="com.github.gilday.darkmode.DarkModeSyncThemes"/>
     <applicationConfigurable instance="com.github.gilday.darkmode.DarkModeConfigurable"/>
   </extensions>
+  <applicationListeners>
+    <listener
+      class="com.github.gilday.darkmode.DarkModeSync$MyLifecycleListener"
+      topic="com.intellij.ide.AppLifecycleListener"/>
+  </applicationListeners>
 </idea-plugin>
