@@ -42,7 +42,7 @@ tasks.test {
 
 tasks.patchPluginXml {
     setSinceBuild("201")
-    setUntilBuild("202.*")
+    setUntilBuild("203.*")
 }
 
 tasks.publishPlugin {
