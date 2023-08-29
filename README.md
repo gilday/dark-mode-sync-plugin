@@ -1,3 +1,7 @@
+# Archived
+
+This plugin is no longer maintained, because this functionality is now built into the IDEA platform.
+
 # macOS Dark Mode Sync IDEA Plugin
 
 ![](https://github.com/gilday/dark-mode-sync-plugin/workflows/Build%20and%20Test/badge.svg)
