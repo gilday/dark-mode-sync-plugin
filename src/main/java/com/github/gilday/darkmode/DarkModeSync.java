@@ -4,11 +4,14 @@ import static com.github.gilday.darkmode.DarkModeDetector.isMacOsDarkMode;
 import static com.github.gilday.darkmode.DarkModeDetector.isWindowsDarkMode;
 
 import com.intellij.concurrency.JobScheduler;
+import com.intellij.ide.AppLifecycleListener;
 import com.intellij.ide.actions.QuickChangeLookAndFeel;
 import com.intellij.ide.ui.LafManager;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.util.Alarm;
 import com.intellij.util.Alarm.ThreadToUse;
@@ -16,6 +19,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.swing.UIManager.LookAndFeelInfo;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Application component which sets IDEA's theme to Darcula when it detects that macOS is in Dark
@@ -24,18 +29,38 @@ import javax.swing.UIManager.LookAndFeelInfo;
  * <p>Schedules a background job for polling macOS Dark Mode configuration and updating IDEA
  * configuration accordingly.
  */
-public final class DarkModeSync implements Disposable {
+public final class DarkModeSync {
 
-  private final ScheduledFuture<?> scheduledFuture;
+  private static DarkModeSync myInstance;
+  private ScheduledFuture<?> scheduledFuture;
 
-  private final LafManager lafManager;
-  private final DarkModeSyncThemes themes;
-  private final Alarm updateOnUIThreadAlarm;
+  private LafManager lafManager;
+  private DarkModeSyncThemes themes;
+  private Alarm updateOnUIThreadAlarm;
 
-  /** @param lafManager IDEA look-and-feel manager for getting and setting the current theme */
-  public DarkModeSync(final LafManager lafManager) {
+  public static final class MyLifecycleListener implements AppLifecycleListener {
+    @Override
+    public void appStarting (@Nullable Project project) {
+      getInstance().onStartup();
+    }
+
+    @Override
+    public void appWillBeClosed(boolean isRestart) {
+      getInstance().onClose();
+    }
+  }
+
+  public static DarkModeSync getInstance() {
+    if (myInstance != null) {
+      myInstance = new DarkModeSync();
+    }
+    return myInstance;
+  }
+
+  public void onStartup(){
     themes = ServiceManager.getService(DarkModeSyncThemes.class);
-    this.lafManager = lafManager;
+    // lafManager IDEA look-and-feel manager for getting and setting the current theme
+    this.lafManager = LafManager.getInstance();
     // Checks if OS is Windows or MacOS
     if (!(SystemInfo.isMacOSMojave || SystemInfo.isWin10OrNewer)) {
       logger.error("Plugin only supports macOS Mojave and greater or Windows 10 and greater");
@@ -47,18 +72,18 @@ public final class DarkModeSync implements Disposable {
     scheduledFuture =
         executor.scheduleWithFixedDelay(this::updateLafIfNecessary, 0, 3, TimeUnit.SECONDS);
     // initialize this last because it publishes "this"
-    updateOnUIThreadAlarm = new Alarm(ThreadToUse.SWING_THREAD, this);
+    updateOnUIThreadAlarm = new Alarm(ThreadToUse.SWING_THREAD);
   }
 
   /** cancels the scheduled task if one exists */
-  @Override
-  public void dispose() {
+  public void onClose() {
     if (scheduledFuture != null) {
       scheduledFuture.cancel(true);
     }
     if (updateOnUIThreadAlarm != null) {
       updateOnUIThreadAlarm.cancelAllRequests();
     }
+    myInstance = null;
   }
 
   private void updateLafIfNecessary() {
