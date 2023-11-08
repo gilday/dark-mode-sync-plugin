@@ -1,5 +1,6 @@
 package com.github.gilday.darkmode;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,9 +23,9 @@ final class DarkModeDetector {
             new BufferedReader(new InputStreamReader(process.getInputStream()));
         BufferedReader stderrReader =
             new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-      final String stdout = stdoutReader.readLine();
-      stderrReader.readLine(); // skip first line of output
-      final String stderr = stderrReader.readLine();
+      final String stdout = BoundedLineReader.readLine(stdoutReader, 1000000);
+      BoundedLineReader.readLine(stderrReader, 1000000); // skip first line of output
+      final String stderr = BoundedLineReader.readLine(stderrReader, 1000000);
       if ("Dark".equals(stdout)) {
         return true;
       }
@@ -55,9 +56,9 @@ final class DarkModeDetector {
 
     try (BufferedReader stdoutReader =
         new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-      stdoutReader.readLine();
-      stdoutReader.readLine();
-      final String stdout = stdoutReader.readLine();
+      BoundedLineReader.readLine(stdoutReader, 1000000);
+      BoundedLineReader.readLine(stdoutReader, 1000000);
+      final String stdout = BoundedLineReader.readLine(stdoutReader, 1000000);
       if (stdout.endsWith("0")) {
         return true;
       } else if (stdout.endsWith("1")) {
